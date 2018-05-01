@@ -8,12 +8,12 @@
         <?php
 
         $x = filter_input(INPUT_GET, 'x');
-          
+
         $param1 = 1;
         $param2 = 1;
-        
+
         while (true) {
-    
+
             if ($param1 > $x) {
                 echo 'Задуманное число НЕ входит в числовой ряд!';
                 echo PHP_EOL;
@@ -30,9 +30,9 @@
                 $param2 = $param3;
                 continue;
             }
-            
+
         }
-                
+
         ?>
     </body>
 </html>
