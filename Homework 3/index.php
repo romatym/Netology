@@ -30,9 +30,8 @@
                 foreach ($animal as $key => $name) 
                 {
                     $pos = strpos($name, ' ');
-                    if ($pos !== FALSE) 
+                    if ($pos !== false) 
                     {
-                        
                         $two_words[] = $name;
                         $pieces = explode(" ", $name);
                         $first_words[] = $pieces[0];
