@@ -49,7 +49,7 @@
             print_r($new_animals);
           
 //            echo '<pre>';
-//            $new_animals2 = [];
+            $continent_new_animals = [];
             
             foreach ($animals as $continent => $animals_array) {
                 
@@ -71,12 +71,25 @@
                     }                
                 }
                 
-                $continent_animals[$continent] = $new_animals2;
+                $continent_new_animals[$continent] = $new_animals2;
                 
             }
 
             echo '<pre>';
-            print_r($continent_animals);
+            print_r($continent_new_animals);
+            
+            
+            foreach ($continent_new_animals as $continent => $animals_array) {
+                
+                echo '<h2>'.$continent.'</h2>';
+                $string_animals = '';
+                
+                foreach ($animals_array as $key => $animal) {
+                    $string_animals = $string_animals.$animal.', ';
+                }
+                echo(substr($string_animals, 0, -2));
+            }
+            
         ?>
     </body>
 </html>
