@@ -24,10 +24,14 @@
             $two_words = [];
             $first_words = [];
             $second_words = [];
-            foreach ($animals as $continent => $animal) {
-                foreach ($animal as $key => $name) {
+            
+            foreach ($animals as $continent => $animal) 
+            {
+                foreach ($animal as $key => $name) 
+                {
                     $pos = strpos($name, ' ');
-                    if ($pos !== FALSE) {
+                    if ($pos !== FALSE) 
+                    {
                         
                         $two_words[] = $name;
                         $pieces = explode(" ", $name);
@@ -42,7 +46,8 @@
             
             $new_animals = [];
             
-            foreach ($first_words as $key1 => $first_word) {
+            foreach ($first_words as $key1 => $first_word) 
+            {
                 $new_animals[] = $first_words[$key1].' '.$second_words[$key1];
             }
             
@@ -52,36 +57,35 @@
           
             $continent_new_animals = [];
             
-            foreach ($animals as $continent => $animals_array) {
-                
+            foreach ($animals as $continent => $animals_array) 
+            {
                 $new_animals2 = [];
                 
-                foreach ($animals_array as $key1 => $animal) {
-                    
-                    foreach ($new_animals as $key2 => $new_animal) {
-                        
+                foreach ($animals_array as $key1 => $animal) 
+                {
+                    foreach ($new_animals as $key2 => $new_animal) 
+                    {
                         $pieces = explode(" ", $new_animal);
                         $find_animal = stristr($animal, $pieces[0]);
                         
-                        if ($find_animal != FALSE) {
-                            
+                        if ($find_animal != false) 
+                        {
                             $new_animals2[] = $new_animal;
-                            
                         }
                     }                
                 }
                 
                 $continent_new_animals[$continent] = $new_animals2;
-                
             }
 
             echo '<br>Новые животные по континентам:';
-            foreach ($continent_new_animals as $continent => $animals_array) {
-                
+            foreach ($continent_new_animals as $continent => $animals_array) 
+            {
                 echo '<h2>'.$continent.'</h2>';
                 $string_animals = '';
                 
-                foreach ($animals_array as $key => $animal) {
+                foreach ($animals_array as $key => $animal) 
+                {
                     $string_animals = $string_animals.$animal.', ';
                 }
                 echo(substr($string_animals, 0, -2));
