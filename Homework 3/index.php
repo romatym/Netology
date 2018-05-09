@@ -18,6 +18,7 @@
                 ];
             
             echo '<pre>';
+            echo 'Исходные животные:';
             print_r($animals);
             
             $two_words = [];
@@ -46,9 +47,9 @@
             }
             
             echo '<pre>';
+            echo '<br>Новые животные:';
             print_r($new_animals);
           
-//            echo '<pre>';
             $continent_new_animals = [];
             
             foreach ($animals as $continent => $animals_array) {
@@ -60,7 +61,6 @@
                     foreach ($new_animals as $key2 => $new_animal) {
                         
                         $pieces = explode(" ", $new_animal);
-//                        $new_animal[] = $pieces[0];
                         $find_animal = stristr($animal, $pieces[0]);
                         
                         if ($find_animal != FALSE) {
@@ -75,10 +75,7 @@
                 
             }
 
-            echo '<pre>';
-            print_r($continent_new_animals);
-            
-            
+            echo '<br>Новые животные по континентам:';
             foreach ($continent_new_animals as $continent => $animals_array) {
                 
                 echo '<h2>'.$continent.'</h2>';
