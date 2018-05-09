@@ -17,6 +17,9 @@
                 'South America' => ['Myrmecophagidae']
                 ];
             
+            echo '<pre>';
+            print_r($animals);
+            
             $two_words = [];
             $first_words = [];
             $second_words = [];
@@ -44,7 +47,36 @@
             
             echo '<pre>';
             print_r($new_animals);
+          
+//            echo '<pre>';
+//            $new_animals2 = [];
             
+            foreach ($animals as $continent => $animals_array) {
+                
+                $new_animals2 = [];
+                
+                foreach ($animals_array as $key1 => $animal) {
+                    
+                    foreach ($new_animals as $key2 => $new_animal) {
+                        
+                        $pieces = explode(" ", $new_animal);
+//                        $new_animal[] = $pieces[0];
+                        $find_animal = stristr($animal, $pieces[0]);
+                        
+                        if ($find_animal != FALSE) {
+                            
+                            $new_animals2[] = $new_animal;
+                            
+                        }
+                    }                
+                }
+                
+                $continent_animals[$continent] = $new_animals2;
+                
+            }
+
+            echo '<pre>';
+            print_r($continent_animals);
         ?>
     </body>
 </html>
