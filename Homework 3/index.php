@@ -29,8 +29,8 @@
             {
                 foreach ($animal as $key => $name) 
                 {
-                    $pos = strpos($name, ' ');
-                    if ($pos !== false) 
+                    $pos = explode(" ", $name);
+                    if (count($pos) == 2) 
                     {
                         $two_words[] = $name;
                         $pieces = explode(" ", $name);
@@ -81,13 +81,7 @@
             foreach ($continent_new_animals as $continent => $animals_array) 
             {
                 echo '<h2>'.$continent.'</h2>';
-                $string_animals = '';
-                
-                foreach ($animals_array as $key => $animal) 
-                {
-                    $string_animals = $string_animals.$animal.', ';
-                }
-                echo(substr($string_animals, 0, -2));
+                echo implode(", ", $animals_array);
             }
             
         ?>
