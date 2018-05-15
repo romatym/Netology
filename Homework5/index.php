@@ -5,8 +5,9 @@
         <title></title>
     </head>
     <body>
-        <?php
-$Phonebook = <<<json
+        
+<?php
+    $phonebook = <<<jsontext
 [  
     {
         "firstName": "Иван",
@@ -21,9 +22,44 @@ $Phonebook = <<<json
         "phoneNumber": "812 123-4567"
     }
 ]
-json;
+jsontext;
         
-echo $Phonebook;
-        ?>
+$phonebook_decoded = json_decode($phonebook, true);
+?>
+        
+        <table>
+        
+        <?php 
+            foreach ($phonebook_decoded as $person) {
+                $columns = array_keys($person);
+                asort($columns);
+                ?>
+                <tr>
+                <?php foreach ($columns as $column) {?>
+                    <td><?php echo($column)?></td>
+        <?php
+                }?>
+                </tr>
+        <?php 
+            break;
+            }
+        ?>            
+        
+        <?php 
+            foreach ($phonebook_decoded as $person) {
+                    ?>
+                <tr>
+                    <?php foreach ($columns as $column) {?>
+                        <td><?php echo($person[$column])?></td>
+                    <?php 
+                    }
+                    ?>
+                </tr>
+        <?php
+            }
+        ?>    
+            
+        </table>
+       
     </body>
 </html>
