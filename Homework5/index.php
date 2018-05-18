@@ -7,30 +7,15 @@
     <body>
         
 <?php
-    $phonebook = <<<jsontext
-[  
-    {
-        "firstName": "Иван",
-        "lastName": "Иванов",
-        "address": "г.Москва, ул. Алиева,2",
-        "phoneNumber": "812 123-1234"
-    },
-    {
-        "firstName": "Петр",
-        "lastName": "Петров",
-        "address": "г.Москва, ул. Ленина,1",
-        "phoneNumber": "812 123-4567"
-    }
-]
-jsontext;
-        
-$phonebook_decoded = json_decode($phonebook, true);
+    
+$phonebook = file_get_contents(__DIR__.'\phonebook.json');
+$phonebookDecoded = json_decode($phonebook, true);
 ?>
         
         <table>
-        
+        <!-- выводим колонки таблицы, сортируем по их возрастанию -->
         <?php 
-            foreach ($phonebook_decoded as $person) {
+                $person = current($phonebookDecoded);
                 $columns = array_keys($person);
                 asort($columns);
                 ?>
@@ -40,13 +25,10 @@ $phonebook_decoded = json_decode($phonebook, true);
         <?php
                 }?>
                 </tr>
-        <?php 
-            break;
-            }
-        ?>            
         
+        <!-- выводим строки таблицы -->
         <?php 
-            foreach ($phonebook_decoded as $person) {
+            foreach ($phonebookDecoded as $person) {
                     ?>
                 <tr>
                     <?php foreach ($columns as $column) {?>
@@ -58,7 +40,6 @@ $phonebook_decoded = json_decode($phonebook, true);
         <?php
             }
         ?>    
-            
         </table>
        
     </body>
