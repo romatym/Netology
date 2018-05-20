@@ -7,9 +7,7 @@
     <body>
       
 <?php
-    //echo ($_GET['num']);
     $testNumber = filter_input(INPUT_GET, "num");
-    //$testNumber = input_get;
     if (!isset($testNumber)) {
         echo 'Номер теста не указан';
         exit;
@@ -17,13 +15,7 @@
 ?>    
    <form action="test.php?num=<?php echo($testNumber) ?>" method="post">     
 <?php
-    //echo ($_GET['num']);
-//    $testNumber = filter_input(INPUT_GET, 'num');
-    //$testNumber =1;
-//    if (!isset($testNumber)) {
-//        echo 'Номер теста не указан';
-//        exit;
-//    }
+
     $testListFile = file_get_contents(__DIR__.'\list.json');
     $testList = json_decode($testListFile, true);
     $flipped = array_flip($testList);
@@ -33,7 +25,6 @@
 ?>   
     <div>
         <p><?php echo(key($test)) ?></p>
-        <!--current($test);-->
         <?php
             foreach (current($test) as $key => $value) {?>
                 <label><input type="radio" name="answer" 

@@ -16,8 +16,7 @@ $str_out = filter_input(INPUT_POST, "newTest");
 if (isset($str_out) and !empty($str_out)) {
     $testListFile = file_get_contents(__DIR__.'\list.json');
     $testList = json_decode($testListFile, true);
-    //var_dump($testList);
-    $testList[$str_out] = 0;//count($testList);
+    $testList[$str_out] = 0;
     $Number = 1; 
     foreach ($testList as $testName => $testNumber) {
         $testList[$testName] = $Number;
@@ -25,15 +24,8 @@ if (isset($str_out) and !empty($str_out)) {
     }
     file_put_contents(__DIR__.'\list.json', json_encode($testList));
     
-//    $testArray = json_decode(file_get_contents(__DIR__.$str_out), true);
-//    echo '<pre>';
-    
-//    echo (__DIR__.$strSlash.$str_out);
-//    $strSlash = '\\';
     $testArray = json_decode(file_get_contents(__DIR__.'\\'.$str_out), true);
-//    echo '<pre>';
     print_r($testArray);
-    //$f = json_encode(file_get_contents($str_out), JSON_UNESCAPED_UNICODE);
 }
 
 ?>
