@@ -17,24 +17,6 @@
     </head>
     <body>
       
-        <?php
-//        if (isset($_POST['name'])) {
-//            $userName = $_POST['name'];
-//        }
-//        else {
-//            $userName = '';
-//        }
-        ?>    
-
-<!--        <form action="test.php?test=
-    <?php 
-    //echo($testName) 
-    ?>
-    " method="post">
-            <p>Ваше имя: <input type="text" name="name"/></p>
-            <p><input type="submit" /></p>
-        </form>-->
-
         <form action="test.php?test=<?php echo($testName) ?>" method="post">
             <p>Ваше имя: <input type="text" name="name"/></p>
             <?php
