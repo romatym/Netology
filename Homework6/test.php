@@ -5,14 +5,25 @@
         <title></title>
     </head>
     <body>
-      
+              
 <?php
-    $testNumber = filter_input(INPUT_GET, "num");
-    if (!isset($testNumber)) {
+    $testName = filter_input(INPUT_GET, "test");
+    if (!isset($testName)) {
         echo 'Номер теста не указан';
         exit;
     }
-?>    
+?>   
+
+        <form action="test.php?test=<?php echo($testName) ?>" method="post">
+            <p>Ваше имя: <input type="text" name="name" /></p>
+            <p><input type="submit" /></p>
+        </form>
+      
+    <?php
+        if (!isset($_POST['name'])) {
+            exit;
+        }
+    ?> 
    <form action="test.php?num=<?php echo($testNumber) ?>" method="post">     
 <?php
 
