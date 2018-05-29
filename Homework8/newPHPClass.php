@@ -1,8 +1,7 @@
 <?php
 /**
  * Description of newPHPClass
- *
- * @author Roma Машина, Телевизор, Шариковая ручка, Утка, Товар. 
+ * @author Roma: Машина, Телевизор, Шариковая ручка, Утка, Товар. 
  */
 class Car {
     
