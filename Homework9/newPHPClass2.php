@@ -182,7 +182,7 @@ $duck->swim_speed = 20;
 $duck->Section = 'birds';
 print_r($duck);
 
-$duck2 = new Duck('Bic', 500, 'brown');
+$duck2 = new Duck('', 800, 'brown');
 $duck2->swim_speed = 30;
 $duck->Section = 'birds';
 print_r($duck2);
