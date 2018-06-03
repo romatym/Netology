@@ -11,7 +11,7 @@ interface item_movement {
 interface item_interface {
     
     public function get_quantity();
-    
+    public function get_price();
 }
 
 abstract class Item implements item_movement, item_interface {
@@ -34,6 +34,9 @@ abstract class Item implements item_movement, item_interface {
     }
     
     public function get_quantity() {
-        echo('quantity: '.$this->quantity);
+        return $this->quantity;
+    }
+    public function get_price() {
+        return $this->price*2;
     }
 } 

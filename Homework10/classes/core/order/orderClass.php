@@ -2,38 +2,23 @@
 
 namespace core;
 
-interface item_movement {
+interface order_interface {
     
-    function buy($num);
-    function sell($num);
-}
-
-interface item_interface {
-    
-    public function get_quantity();
+    public function printOrder($cart);
     
 }
 
-abstract class Item implements item_movement, item_interface {
+class order extends cart implements order_interface {
     
-    public $brand;
-    
-    protected $quantity;
-    protected $price;
-    
-    public function __construct($brand, $price) {
-        $this->brand = $brand;
-        $this->price = $price;
-        $this->quantity = 0;
-    }
-    public function buy($num) {
-        $this->quantity = $this->quantity + $num;
-    }
-    public function sell($num) {
-        $this->quantity = $this->quantity - $num;
+    public function __construct() {
+            parent::__construct();
     }
     
-    public function get_quantity() {
-        echo('quantity: '.$this->quantity);
+    public function printOrder($cart) {
+        echo '<pre>';
+        echo 'Order total: ';
+        echo($cart->get_cart_total($cart));
+        echo '<br>';
+        //print_r($cart);
     }
 } 

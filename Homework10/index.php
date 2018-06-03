@@ -1,32 +1,34 @@
 <?php
 
 function AutoloadItem($className) {
-    $filePath = './classes/core/item/' . $className . 'class.php';
+//    $file = str_replace('\\', '/', $className);
+//    $f = $path = $_SERVER['DOCUMENT_ROOT'];
+    $filePath = 'classes\\'.$className .'\\'. 'itemClass.php';
     if (file_exists($filePath)) {
         include "$filePath";
     }  
 }
 function AutoloadInventory($className) {
-    $filePath = './classes/Inventory/' . $className . 'class.php';
+    $filePath = $className . 'class.php';
     if (file_exists($filePath)) {
         include "$filePath";
     }  
     
 }
 function AutoloadCart($className) {
-    $filePath = './classes/core/cart/' . $className . 'class.php';
+    $filePath = 'classes\\'.$className .'\\'. 'cartClass.php';
     if (file_exists($filePath)) {
         include "$filePath";
     }  
 }
 function AutoloadOrder($className) {
-    $filePath = './classes/core/order/' . $className . 'class.php';
+    $filePath = 'classes\\'.$className .'\\' . 'orderClass.php';
     if (file_exists($filePath)) {
         include "$filePath";
     }  
 }
 function Autoload($className) {
-    $filePath = './classes/' . $className . 'class.php';
+    $filePath = '.\classes\\' . $className . 'class.php';
     if (file_exists($filePath)) {
         include "$filePath";
     }    
@@ -38,14 +40,23 @@ spl_autoload_register('AutoloadCart');
 spl_autoload_register('AutoloadOrder');
 spl_autoload_register('Autoload');
 
+class myCart extends core\cart {
+    
+}
+
+class myItem extends core\Item {
+    
+}
+
 echo '<pre>';
 
-$new_car1 = new car('BMW', 100, 'red');
-$new_car1->fill_up(60);
-$new_car1->sell(1);
-print_r($new_car1);
+$new_cart = new myCart();
+$new_item = new myItem('Sony', 100);
+$SellPrice = $new_item->get_price();
+$new_cart->add($new_item, $SellPrice, 1);
 
-$new_car2 = new car('Volvo', 200, 'grey');
-$new_car2->fill_up(40);
-$new_car2->sell(1);
-print_r($new_car2);
+print_r($new_cart);
+
+$newPrint = new core\Order();
+$newPrint->printOrder($new_cart);
+

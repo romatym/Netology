@@ -2,38 +2,45 @@
 
 namespace core;
 
-interface item_movement {
+interface cart_operations {
     
-    function buy($num);
-    function sell($num);
+    function add($item, $price, $quantity);
+    function remove($item);
 }
 
-interface item_interface {
+interface cart_interface {
     
-    public function get_quantity();
+    public function get_cart_total($cart);
     
 }
 
-abstract class Item implements item_movement, item_interface {
+abstract class cart implements cart_operations, cart_interface {
     
-    public $brand;
+    protected $cart_total;
+    protected $items;
+
+    public function __construct() {
+        $this->items = [];
+        $this->cart_total = 0;
+    }
+    public function add($item, $price, $quantity) {
+        $this->items[] = [$item, $price, $quantity];
+    }
+    public function remove($item) {
+        foreach ($this->items as $row -> $value) {
+            if ($value[0] === $item) {
+                unset($this->items[$row]);
+                break;
+            }
+        }
+    }
     
-    protected $quantity;
-    protected $price;
-    
-    public function __construct($brand, $price) {
-        $this->brand = $brand;
-        $this->price = $price;
-        $this->quantity = 0;
-    }
-    public function buy($num) {
-        $this->quantity = $this->quantity + $num;
-    }
-    public function sell($num) {
-        $this->quantity = $this->quantity - $num;
+    public function get_cart_total($cart) {
+        $cart_total = 0;
+        foreach ($cart->items as $value) {
+            $cart_total = $cart_total + $value[1]*$value[2];
+        }
+        return $cart_total;
     }
     
-    public function get_quantity() {
-        echo('quantity: '.$this->quantity);
-    }
 } 
