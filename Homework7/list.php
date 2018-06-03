@@ -11,8 +11,11 @@
         $directory = __DIR__ . '\Tests\\';
         $scanned_directory = array_diff(scandir($directory), array('..', '.'));
         foreach ($scanned_directory as $key => $value) {
+            $link = 'test.php?test='.$value;
             ?>
-            <p><?php echo($value) ?></p>
+            <p>
+                <a href= "<?php echo $link ?>"><?php echo $value ?></a>
+            </p>
 
         <?php } ?>        
         
