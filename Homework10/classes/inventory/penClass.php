@@ -1,5 +1,7 @@
 <?php
 
+namespace inventory;
+
 interface Pen_interface {
     
     public function write($text);

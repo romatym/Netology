@@ -1,5 +1,7 @@
 <?php
 
+namespace inventory;
+
 interface Duck_interface {
     
     public function swim($speed);

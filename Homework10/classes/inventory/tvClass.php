@@ -1,5 +1,7 @@
 <?php
 
+namespace inventory;
+
 interface TV_interface {
     
     public function switch_state($new_state);

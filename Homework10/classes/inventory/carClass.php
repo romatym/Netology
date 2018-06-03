@@ -1,5 +1,7 @@
 <?php
 
+namespace inventory;
+
 interface Car_interface {
     
     public function fill_up($litres);

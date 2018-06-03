@@ -1,5 +1,7 @@
 <?php
 
+namespace core;
+
 interface item_movement {
     
     function buy($num);
