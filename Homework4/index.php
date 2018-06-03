@@ -10,9 +10,12 @@
         exit('Не удалось преобразовать данные');
     }
     $temperature = round($content_decoded->main->temp - 273.15); //Перевод из Кельвинов в градусы Цельсия
+    $temperatureText = '<br/>Температура: ' . strval((!empty($temperature)) ? $temperature : 'Нет данных');
     $pressure = round($content_decoded->main->pressure);
+    $pressureText = '<br/>Давление: ' . strval((!empty($pressure)) ? $pressure : 'Нет данных');
     $humidity = round($content_decoded->main->humidity);
-
+    $humidityText = '<br/>Влажность: ' . strval((!empty($humidity)) ? $humidity : 'Нет данных');
+            
     echo '<pre>';
     echo 'Погода в Москве:';
     $weather_description = $content_decoded->weather;
@@ -20,10 +23,9 @@
         echo '<br/>';
         echo($weather_description[0]->description);
     }
-    echo('<br/>Температура: ' . (!empty($temperature) ? $temperature, : 'Нет данных');
-    echo('<br/>Давление: ' . $pressure);
-    echo('<br/>Влажность: ' . $humidity);
-    echo('</pre>';
+    echo($temperatureText);
+    echo($pressureText);
+    echo($humidityText);
 ?>
 <!DOCTYPE html>
 <html>
