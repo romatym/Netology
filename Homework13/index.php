@@ -194,5 +194,9 @@
                 
         </table>
         
+        <br>
+        
+        <a href="logout.php">Выход</a> </li>
+        
     </body>
 </html>
