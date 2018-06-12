@@ -1,10 +1,5 @@
 <?php
-session_start();
-/**
- * Реализует механизм авторизации
- * @param $login
- * @param $password
- */
+
 function login($login, $password) {
     $user = getUser($login);
     if ($user && $user['password'] === $password) {
@@ -21,20 +16,15 @@ function login($login, $password) {
  */
 function register($login, $password) {
       
-    //проверим, что нет пользователя с таким именем
-    $pdo = new PDO("mysql:host=localhost;dbname=homework13;charset=utf8", "root", "");
-    $sql = "SELECT * FROM users where user = ?";
-    
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$login]);    
-    $table = $stmt->fetchAll();
-
-    if (!empty($table)) {
+    //проверим, что нет пользователя с таким именем    
+    $table = getUser($login);
+    if ($table) {
         return false;
     }
 
     //запишем пользователя в таблицу
-    $sql = "INSERT INTO users (user, password) VALUES (?,?)";
+    $pdo = new PDO("mysql:host=localhost;dbname=homework13;charset=utf8", "root", "");
+    $sql = "INSERT INTO users (login, password) VALUES (?,?)";
     $stmt = $pdo->prepare($sql);
     $affected = $stmt->execute([$login, $password]);
     if ($affected > 0) {
@@ -45,47 +35,34 @@ function register($login, $password) {
 }
 
 /**
- * Получение пользователя по его логину
- * @param $login
- * @return mixed|null
- */
-function getUser($login) {
-    $users = getUsers();
-    foreach ($users as $user) {
-        if ($login === $user['login']) {
-            return $user;
-        }
-    }
-    return null;
-}
-
-/**
  * Получение всех пользователей из бд
  * @return array|mixed
  */
-function getUsers($user) {
+function getUser($user) {
     
     $pdo = new PDO("mysql:host=localhost;dbname=homework13;charset=utf8", "root", "");
-    $sql = "SELECT * FROM users where user = ?";
     
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$user]);    
-    $table = $stmt->fetchAll();
-
-    if (!empty($table)) {
-        return $table;
+//    $sql = "SELECT * FROM users WHERE login = ? ";
+//    $stmt = $pdo->prepare($sql);
+//    $stmt->execute([$user]);
+//    $table = $stmt->fetchAll(PDO::FETCH_ASSOC);  
+//    foreach ($table as $row) {
+//        echo($row['login']);
+//    }    
+    
+    $sql = "SELECT * FROM users where login = '".$user."'";
+    //$sql = "SELECT * FROM users where login = ':user'";
+    $table = $pdo->query($sql);
+    foreach ($table as $row) {
+        return $row;
     }
     
-    $userData = file_get_contents(__DIR__ . '/data/users.json');
-    if (!$userData) {
-        return [];
+    if (!$table) {
+        return $table['login'];
+    } else {
+        return NULL;
     }
-    $users = json_decode($userData, true);
-    if (!$users) {
-        return [];
-    }
-
-    return $users;
+    
 }
 
 /**
@@ -103,6 +80,6 @@ function isAdmin()
 }
 
 function redirect($page) {
-    header("Location: $page.php");
+    header("Location: $page");
     die;
 }

@@ -43,7 +43,6 @@
     if (isset($_REQUEST['assign'])) {
         $assigned_user_id = (int)$_REQUEST['assigned_user_id'];
         $row_id = (int)$_REQUEST['row_id'];
-        //$pdo = new PDO("mysql:host=localhost;dbname=homework13;charset=utf8", "root", "");
         
         $sql = "UPDATE tasks SET assigned_user_id = ? where id = ?";
         $stmt = $pdo->prepare($sql);
