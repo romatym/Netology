@@ -18,6 +18,9 @@
             http_response_code(404);
             exit(1);
         }
+        
+
+        
 ?>        
 <!DOCTYPE html>
 <html>
@@ -28,44 +31,55 @@
     <body>
       
         <form action="test.php?test=<?php echo($testName) ?>" method="post">
-            <p>Ваше имя: <input type="text" name="name"/></p>
+            <p>Ваше имя: <input type="text" name="$userName"/></p>
             <?php
             $test = json_decode($testContent, true);
+            $n=0;
+            foreach ($test as $question => $answers) {
+                
             ?>   
-            <div>
-                <p><?php echo(key($test)) ?></p>
-                <?php foreach (current($test) as $key => $value) { ?>
-                    <label><input type="radio" name="answer" 
-                                  value="<?php echo($value) ?>">
-                            <?php echo($key) ?></label>
-                        <?php
-                    }
-                    ?>
-                    </br>
-                    </br>
-            </div>
-
+                <div>
+                    <p><?php echo($question) ?></p>
+                    <?php foreach ($answers as $key => $value) { ?>
+                        <label><input type="radio" name="answer<?php echo($n)?>" 
+                                      value="<?php echo($value) ?>">
+                                <?php echo($key) ?></label>
+                            <?php
+                        }
+                        ?>
+                        </br>
+                        </br>
+                </div>
+            <?php
+            $n++;
+            }
+            ?>
+            
             <button type="submit" name="testResult">Результат</button>
-
+            <input type="hidden" name="NumberOfQuestions" value='<?php echo($n)?>'>
         </form>
         </br>
     
-        <?php
-        if (isset($_POST['answer'])) {
-            $Result = filter_input(INPUT_POST, "answer");
-            if ($Result == '1') {
-                echo 'Ответ правильный';
-                if (isset($_POST['name'])) {
-                    $userName = $_POST['name'];
-                }
+    <?php
+        $Result = 0;
+        $n=0;
+        while (isset($_POST['answer'.$n])) {
+            $Result = $Result + (int)$_POST['answer'.$n];
+            $n++;  
+        }
+        if (isset($_POST['NumberOfQuestions'])) {
+            $NumberOfQuestions = filter_input(INPUT_POST, "NumberOfQuestions");
+            if ($Result == (int)$NumberOfQuestions) {
+                echo 'Тест пройден!';
         ?>        
-        <img src="sertificate.php?name= <?php echo($userName) ?>">
+        <img src="sertificate.php?name= <?php echo($_POST['$userName']) ?>">
         <?php    
             } else {
-                echo 'Ответ НЕправильный';
+                echo 'Тест НЕ пройден!';
             }
         }
-        ?>
+    ?>    
         
     </body>
 </html>
+
