@@ -24,7 +24,12 @@
             echo 'Ошибка авторизации';
             die;
         }
+    } 
+    else {
+            echo 'Пользователь не авторозован';
+            header("Location: login.php");
     }
+    
     if (isset($_REQUEST['action']) && isset($_REQUEST['id'])) {
         $action_value = (string)$_REQUEST['action'];
         $action_id = (int)$_REQUEST['id'];
