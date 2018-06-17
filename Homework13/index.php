@@ -11,7 +11,6 @@
         $description_value = (string)$_POST['description'];
         $current_date = date("Y-m-d H:i:s");
         $user_id = $_COOKIE['user_id'];
-        //$pdo = new PDO("mysql:host=localhost;dbname=homework13;charset=utf8", "root", "");
         $sql = "INSERT INTO tasks (description, date_added, is_done, user_id) VALUES (?,?,?,?)";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$description_value, $current_date, 0, $user_id]);
@@ -33,7 +32,6 @@
     if (isset($_REQUEST['action']) && isset($_REQUEST['id'])) {
         $action_value = (string)$_REQUEST['action'];
         $action_id = (int)$_REQUEST['id'];
-        //$pdo = new PDO("mysql:host=localhost;dbname=homework13;charset=utf8", "root", "");
         if ($action_value == 'done') {
             $sql = "UPDATE tasks SET is_done = 1 where id = ?";
         }
