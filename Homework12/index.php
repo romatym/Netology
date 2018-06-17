@@ -74,23 +74,21 @@ if (isset($_REQUEST['action']) && isset($_REQUEST['id'])) {
             
             if (!empty($table)) {
                 
-                
-                
                 foreach ($table as $row) {
                     
-        ?>
-                
-            <tr>
-                <td><?php echo($row['description']) ?></td>
-                <td><?php echo($row['date_added']) ?></td>
-                <td><span style='color: orange;'><?php echo(($row['is_done']==0) ? 'В процессе' : 'Выполнено') ?></span></td>
-                <td>
-                    <a href='?id=<?php echo($row['id']) ?>&action=done'>Выполнить</a>
-                    <a href='?id=<?php echo($row['id']) ?>&action=delete'>Удалить</a>
-                </td>
-            </tr>
-                
-        <?php
+                    ?>
+
+                        <tr>
+                            <td><?php echo($row['description']) ?></td>
+                            <td><?php echo($row['date_added']) ?></td>
+                            <td><span style='color: orange;'><?php echo(($row['is_done']==0) ? 'В процессе' : 'Выполнено') ?></span></td>
+                            <td>
+                                <a href='?id=<?php echo($row['id']) ?>&action=done'>Выполнить</a>
+                                <a href='?id=<?php echo($row['id']) ?>&action=delete'>Удалить</a>
+                            </td>
+                        </tr>
+
+                    <?php
                 
                 }    
             }
