@@ -1,46 +1,97 @@
 <?php
+if (isset($_POST['adress']) OR isset($_GET['adress'])) {
 
-require __DIR__.'/vendor/autoload.php';
+    require 'C:\xampp\htdocs\Netology\Homework15\vendor\autoload.php';
 
-$api = new \Yandex\Geo\Api();
+    if (isset($_POST['adress'])) {
+        $adress = $_POST['adress'];
+    } elseif (isset($_GET['adress'])) {
+        $adress = $_GET['adress'];
+    }
+    
+    $api = new \Yandex\Geo\Api();
 
-// Можно искать по точке
-$api->setPoint(30.5166187, 50.4452705);
+    // Или можно икать по адресу
+    $api->setQuery($adress);
 
-// Или можно икать по адресу
-$api->setQuery('Тверская 6');
+    // Настройка фильтров
+    $api
+        ->setLimit(1) // кол-во результатов
+        ->setLang(\Yandex\Geo\Api::LANG_US) // локаль ответа
+        ->load();
 
-// Настройка фильтров
-$api
-    ->setLimit(1) // кол-во результатов
-    ->setLang(\Yandex\Geo\Api::LANG_US) // локаль ответа
-    ->load();
+        $response = $api->getResponse();
+        $response->getFoundCount(); // кол-во найденных адресов
 
-$response = $api->getResponse();
-$response->getFoundCount(); // кол-во найденных адресов
-$response->getQuery(); // исходный запрос
-$response->getLatitude(); // широта для исходного запроса
-$response->getLongitude(); // долгота для исходного запроса
+        // Список найденных точек
+        $collection = $response->getList();
+        if (count($collection)==1) {
+            $item = $collection[0];
+            $itemAddress = $item->getAddress(); // вернет адрес
 
-// Список найденных точек
-$collection = $response->getList();
-foreach ($collection as $item) {
-    $item->getAddress(); // вернет адрес
-    $item->getLatitude(); // широта
-    $item->getLongitude(); // долгота
-    $item->getData(); // необработанные данные
+            $latitude = $item->getLatitude();
+            $longitude = $item->getLongitude();
+        } 
+        elseif (count($collection)>1) {
+            $itemAddresses = [];
+            foreach ($collection as $item) {
+                $itemAddresses[] = $item->getAddress(); // вернет адрес
+            }
+        }
+    
 }
 ?>
-
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
         <title></title>
+        
+        <?php if (isset($latitude) && isset($longitude)) { ?>
+        
+            <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript">
+            </script>
+
+            <script type="text/javascript">
+                ymaps.ready(init);
+                var myMap, 
+                    myPlacemark;
+
+                function init() { 
+
+                    myMap = new ymaps.Map("map", {
+                        center: [<?php echo($latitude) ?>, <?php echo($longitude) ?>],
+                        zoom: 11
+                    }); 
+
+                    myPlacemark = new ymaps.Placemark([
+                        <?php echo($latitude) ?>
+                        , 
+                        <?php echo($longitude) ?>
+                        ], {
+                        hintContent: '<?php echo($itemAddress) ?>',
+                        balloonContent: '<?php echo($itemAddress) ?>'
+                    });
+            
+				myMap.geoObjects.add(myPlacemark);
+                }
+            </script>
+        <?php } ?>
     </head>
+    
     <body>
-        <?php
-        // put your code here
-        ?>
+        
+        <form method="post">
+            <p>Введите адрес: <input type="text" name="adress"/></p>
+            <button type="submit" name="find">Найти</button>
+        </form>
+        
+        <?php if (isset($latitude) && isset($longitude)) { ?>
+            <div id="map" style="width: 600px; height: 400px"></div>
+        <?php } elseif (isset($itemAddresses)) { 
+            foreach ($itemAddresses as $itemAddress) { ?>
+                <a href='index.php?adress=<?php $itemAddress ?>'><?php echo($itemAddress)?></a>
+        <?php } 
+        } ?>
     </body>
 </html>
