@@ -9,7 +9,6 @@ try {
   $loader = new Twig_Loader_Filesystem('templates');
 
   // инициализируем Twig
-  //$twig = new Twig_Environment($loader);
   $twig = new Twig_Environment($loader, array(
     'cache'       => 'compilation_cache',
     'auto_reload' => true
