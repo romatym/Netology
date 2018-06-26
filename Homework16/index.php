@@ -19,6 +19,8 @@ if (isset($_GET['user'])) {
 elseif (!isset($_COOKIE['user'])) {    
     echo 'Пользователь не авторозован';
     header("Location: login.php");
+} else {
+    $user = $_COOKIE['user'];
 }
 
 //************Проверка всех возможных действий *****************************
@@ -35,7 +37,11 @@ if (isset($_REQUEST['action']) && isset($_REQUEST['id'])) {
     $action = (string) $_REQUEST['action'];
     $action_id = (int) $_REQUEST['id'];
     
-    changeTask($pdo, $action, $action_id);
+    if ($action == 'done') {
+        setDoneTask($pdo, $action_id);
+    } elseif ($action == 'delete') {
+        deleteTask($pdo, $action_id);
+    }
     
 }
 
@@ -48,24 +54,11 @@ if (isset($_REQUEST['assign'])) {
 }
     
 //************Вывод шаблона *****************************
-try {
-  // указывае где хранятся шаблоны
-  $loader = new Twig_Loader_Filesystem('templates');
+initTwig('tasks.tmpl', 
+        array(
+        'tasks'=> getTasks($pdo),
+        'user'=>$user,
+        'users'=>getUsersList($pdo)
+      )
+);
 
-  // инициализируем Twig
-  $twig = new Twig_Environment($loader);
-
-  // подгружаем шаблон
-  $template = $twig->loadTemplate('tasks.tmpl');
-
-  // передаём в шаблон переменные и значения
-  // выводим сформированное содержание
-  echo $template->render(array(
-      'tasks'=> getTasks($pdo),
-      'user'=>$user,
-      'users'=>getUsersList($pdo)
-    ));
-
-} catch (Exception $e) {
-  die ('ERROR: ' . $e->getMessage());
-}

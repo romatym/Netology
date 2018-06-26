@@ -1,7 +1,27 @@
 <?php
 
-function login($login, $password) {
-    $user = getUser($login);
+function initTwig($Template, $params) {
+    try {
+      // указывае где хранятся шаблоны
+      $loader = new Twig_Loader_Filesystem('templates');
+
+      // инициализируем Twig
+      $twig = new Twig_Environment($loader);
+
+      // подгружаем шаблон
+      $template = $twig->loadTemplate($Template);
+
+      // передаём в шаблон переменные и значения
+      // выводим сформированное содержание
+      echo $template->render($params);
+
+    } catch (Exception $e) {
+      die ('ERROR: ' . $e->getMessage());
+    }
+}
+
+function login($pdo, $login, $password) {
+    $user = getUser($pdo, $login);
     if ($user && $user['password'] === $password) {
         $_SESSION['user'] = $user;
         return true;
@@ -23,13 +43,21 @@ function addTask($pdo, $description) {
     
 }
 
-function changeTask($pdo, $action, $action_id) {
+function setDoneTask($pdo, $action_id) {
     
-    if ($action == 'done') {
-        $sql = "UPDATE tasks SET is_done = 1 where id = ?";
-    } elseif ($action == 'delete') {
-        $sql = "delete from tasks where id = ?";
+    $sql = "UPDATE tasks SET is_done = 1 where id = ?";
+
+    $stmt = $pdo->prepare($sql);
+    $result = $stmt->execute([$action_id]);
+
+    if (!$result) {
+        return($stmt->errorInfo());
     }
+}
+
+function deleteTask($pdo, $action_id) {
+    
+    $sql = "delete from tasks where id = ?";
 
     $stmt = $pdo->prepare($sql);
     $result = $stmt->execute([$action_id]);
@@ -85,7 +113,7 @@ function getUsersList($pdo) {
  * @param $login
  * @param $password
  */
-function register($login, $password) {
+function register($pdo, $login, $password) {
       
     //проверим, что нет пользователя с таким именем    
     $table = getUser($login);
@@ -94,7 +122,7 @@ function register($login, $password) {
     }
 
     //запишем пользователя в таблицу
-    $pdo = new PDO("mysql:host=localhost;dbname=homework13;charset=utf8", "root", "");
+    //$pdo = new PDO("mysql:host=localhost;dbname=homework13;charset=utf8", "root", "");
     $sql = "INSERT INTO users (login, password) VALUES (?,?)";
     $stmt = $pdo->prepare($sql);
     $affected = $stmt->execute([$login, $password]);
@@ -109,9 +137,9 @@ function register($login, $password) {
  * Получение всех пользователей из бд
  * @return array|mixed
  */
-function getUser($user) {
+function getUser($pdo, $user) {
     
-    $pdo = new PDO("mysql:host=localhost;dbname=homework13;charset=utf8", "root", "");
+    //$pdo = new PDO("mysql:host=localhost;dbname=homework13;charset=utf8", "root", "");
     
 //    $sql = "SELECT * FROM users WHERE login = ? ";
 //    $stmt = $pdo->prepare($sql);
@@ -121,7 +149,7 @@ function getUser($user) {
 //        echo($row['login']);
 //    }    
     
-    $sql = "SELECT * FROM users where login = '".$user."'";
+    $sql = "SELECT id, login, password FROM users where login = '".$user."'";
     //$sql = "SELECT * FROM users where login = ':user'";
     $table = $pdo->query($sql);
     foreach ($table as $row) {

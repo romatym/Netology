@@ -7,10 +7,12 @@ session_start();
 $errors = [];
 if (!empty($_POST['login']) && !empty($_POST['password'])) {
 
+    $pdo = new PDO("mysql:host=localhost;dbname=homework13;charset=utf8", "root", "");
+    
     if (empty($_POST['sign_in'])) {
         
-        if (register($_POST['login'], $_POST['password'])) {
-            $new_user = getUser($_POST['login']);
+        if (register($pdo, $_POST['login'], $_POST['password'])) {
+            $new_user = getUser($pdo, $_POST['login']);
             redirect('index.php?user_id='.$new_user['id'].'&user='.$new_user[login].'&PHPSESSID='.$_COOKIE[PHPSESSID]);
             die;
         } else {
@@ -19,7 +21,7 @@ if (!empty($_POST['login']) && !empty($_POST['password'])) {
         }
     }
     else {
-        if (login($_POST['login'], $_POST['password'])) {
+        if (login($pdo, $_POST['login'], $_POST['password'])) {
             redirect('index.php?user_id='.$_SESSION['user']['id'].'&user='.$_SESSION['user'][login].'&PHPSESSID='.$_COOKIE[PHPSESSID]);
             die;
         } else {
@@ -28,22 +30,8 @@ if (!empty($_POST['login']) && !empty($_POST['password'])) {
     }
 }
 
-try {
-  // указывае где хранятся шаблоны
-  $loader = new Twig_Loader_Filesystem('templates');
-
-  // инициализируем Twig
-  $twig = new Twig_Environment($loader);
-
-  // подгружаем шаблон
-  $template = $twig->loadTemplate('login.tmpl');
-
-  // передаём в шаблон переменные и значения
-  // выводим сформированное содержание
-  echo $template->render(array(
-      'errors'=>$errors
-    ));
-
-} catch (Exception $e) {
-  die ('ERROR: ' . $e->getMessage());
-}
+initTwig('login.tmpl', 
+        array(
+        'errors'=>$errors
+        )
+);
