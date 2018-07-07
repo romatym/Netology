@@ -79,6 +79,58 @@ function login($pdo, $login, $password) {
     return FALSE;
 }
 
+function getCategories($pdo) {
+    
+    $sql = "SELECT id, name FROM categories";
+    $stmt = $pdo->prepare($sql);
+    $result = $stmt->execute();
+    
+    if (!$result) {
+        return($stmt->errorInfo());
+    }
+    //$table = $stmt->fetchAll();
+    $table2 = [];
+    foreach ($stmt->fetchAll() as $key => $value) {
+        $table2[$value['id']] = $value;
+    }
+    return $table2;
+}
+
+function getTree($pdo) {
+    
+    $Categories = getCategories($pdo);
+    $Questions = getQuestions($pdo);
+    $tree = [];
+    foreach ($Categories as $key1 => $value1) {
+        $branch = [];
+        foreach ($Questions as $key2 => $value2) {
+            if ($value1['id'] == $value2['category_id']) {
+                $branch[] = $value2;
+            }
+        }
+        $tree[$value1['id']] = $branch;
+    }
+
+    return $tree;
+}
+
+function getQuestions($pdo) {
+    
+    $sql = "SELECT questions.id, questions.question, questions.topic, questions.date, questions.email, questions.publish, questions.author,
+            admins.login,
+            questions.category_id, categories.name as category
+            FROM questions
+            LEFT JOIN admins on admins.id = questions.admin_id
+            LEFT JOIN categories on categories.id = questions.category_id";
+    $stmt = $pdo->prepare($sql);
+    $result = $stmt->execute();
+    
+    if (!$result) {
+        return($stmt->errorInfo());
+    }
+    return $stmt->fetchAll();
+}
+
 function addTask($pdo, $description) {
     
     $current_date = date("Y-m-d H:i:s");
@@ -199,7 +251,7 @@ function getUser($pdo, $user) {
 //        echo($row['login']);
 //    }    
     
-    $sql = "SELECT id, login, password FROM users where login = '".$user."'";
+    $sql = "SELECT id, login, password FROM admins where login = '".$user."'";
     //$sql = "SELECT * FROM users where login = ':user'";
     $table = $pdo->query($sql);
     foreach ($table as $row) {
