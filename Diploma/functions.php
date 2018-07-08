@@ -79,6 +79,17 @@ function login($pdo, $login, $password) {
     return FALSE;
 }
 
+function getCategoryByName($pdo, $name) {
+    
+    $sql = "SELECT id, name FROM categories where name='".$name."'";
+    //$sql = "SELECT * FROM users where login = ':user'";
+    $table = $pdo->query($sql);
+    foreach ($table as $row) {
+        return $row['id'];
+    }    
+
+}
+
 function getCategories($pdo) {
     
     $sql = "SELECT id, name FROM categories";
@@ -88,12 +99,11 @@ function getCategories($pdo) {
     if (!$result) {
         return($stmt->errorInfo());
     }
-    //$table = $stmt->fetchAll();
-    $table2 = [];
+    $table = [];
     foreach ($stmt->fetchAll() as $key => $value) {
-        $table2[$value['id']] = $value;
+        $table[$value['id']] = $value;
     }
-    return $table2;
+    return $table;
 }
 
 function getTree($pdo) {
@@ -131,13 +141,26 @@ function getQuestions($pdo) {
     return $stmt->fetchAll();
 }
 
-function addTask($pdo, $description) {
+function addQuestion($pdo, $category, $name, $email, $topic, $question) {
     
-    $current_date = date("Y-m-d H:i:s");
-    $user_id = $_COOKIE['user_id'];
-    $sql = "INSERT INTO tasks (description, date_added, is_done, user_id) VALUES (?,?,?,?)";
+    $categoryId = getCategoryByName($pdo, $category);
+    
+    $sql = "INSERT INTO questions (category, author, email, topic, question, date) VALUES (?,?,?,?,?,?)";
     $stmt = $pdo->prepare($sql);
-    $result = $stmt->execute([$description, $current_date, 0, $user_id]);
+    $result = $stmt->execute([$categoryId, $name, $email, $topic, $question, date("Y-m-d H:i:s")]);
+    
+    if (!$result) {
+        $a = $stmt->errorInfo();
+        return($a);
+    }  
+    
+}
+
+function addAdmin($pdo, $login, $password) {
+    
+    $sql = "INSERT INTO admins (login, password) VALUES (?,?)";
+    $stmt = $pdo->prepare($sql);
+    $result = $stmt->execute([$login, $password]);
     
     if (!$result) {
         return($stmt->errorInfo());
@@ -145,61 +168,33 @@ function addTask($pdo, $description) {
     
 }
 
-function setDoneTask($pdo, $action_id) {
+function setPassword($pdo, $login, $password) {
     
-    $sql = "UPDATE tasks SET is_done = 1 where id = ?";
+    $sql = "UPDATE admins SET password = ? where login = ?";
 
     $stmt = $pdo->prepare($sql);
-    $result = $stmt->execute([$action_id]);
+    $result = $stmt->execute([$password, $login]);
 
     if (!$result) {
         return($stmt->errorInfo());
     }
 }
 
-function deleteTask($pdo, $action_id) {
+function deleteUser($pdo, $login) {
     
-    $sql = "delete from tasks where id = ?";
+    $sql = "delete from admins where login = ?";
 
     $stmt = $pdo->prepare($sql);
-    $result = $stmt->execute([$action_id]);
+    $result = $stmt->execute([$login]);
 
     if (!$result) {
         return($stmt->errorInfo());
     }
 }
 
-function assignTask($pdo, $user_id, $row_id) {
+function getAdminsList($pdo) {
     
-    $sql = "UPDATE tasks SET assigned_user_id = ? where id = ?";
-    $stmt = $pdo->prepare($sql);
-    $result = $stmt->execute([$user_id, $row_id]);
-
-    if (!$result) {
-        return($stmt->errorInfo());
-    }
-}
-
-function getTasks($pdo) {
-    
-    $sql = "SELECT tasks.id, tasks.description, tasks.date_added, tasks.is_done, 
-                users.id as user_id, users.login as login, tasks.assigned_user_id as assigned_user_id, users_ass.login as assigned_user_login
-                FROM tasks 
-                LEFT JOIN users on users.id = tasks.user_id
-                LEFT JOIN users as users_ass on users_ass.id = tasks.assigned_user_id
-                ";
-    $stmt = $pdo->prepare($sql);
-    $result = $stmt->execute();
-    
-    if (!$result) {
-        return($stmt->errorInfo());
-    }
-    return $stmt->fetchAll();
-}
-
-function getUsersList($pdo) {
-    
-    $sql = "SELECT login, id FROM users";
+    $sql = "SELECT login, id FROM admins";
     
     $stmt = $pdo->prepare($sql);
     $result = $stmt->execute();

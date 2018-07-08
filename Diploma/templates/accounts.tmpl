@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        
+        <style>
+            table { 
+                border-spacing: 0;
+                border-collapse: collapse;
+            }
+
+            table td, table th {
+                border: 1px solid #ccc;
+                padding: 5px;
+            }
+
+            table th {
+                background: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        
+        <h1>Здравствуйте, {{admin}}! </h1>
+        
+        <form method="POST">
+            <input type="text" name="login" placeholder="Логин" value="" />
+            <input type="password" name="password" placeholder="Пароль" value="" />
+            <input type="submit" name="addAdmin" value="Добавить администратора" />
+        </form>
+        <br>
+        
+        <!--таблица аккаунтов-->
+        <table>
+            <tr>
+                <th>Логин</th>
+                <th>Действие</th>
+            </tr>
+                    
+        
+                {% for key,row in admins %}
+                
+                <tr>
+                    <td>{{ row.login }}</td>
+                    <td>
+                        <a href='?id={{row.id}}&action=changePassword'>Изменить пароль</a>
+                        <a href='?id={{row.id}}&action=delete'>Удалить</a>
+                    </td>
+                </tr>
+                
+                {% endfor %}
+                
+        </table>
+        
+        <br>
+        <br>
+        
+        <a href="logout.php">Выход</a>
+        <a href="index.php">К списку вопросов</a>
+        
+    </body>
+</html>

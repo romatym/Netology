@@ -12,9 +12,16 @@
 	<title>FAQ</title>
 </head>
 <body>
+{% if user=='' %}
+    <a href="login.php">Войти</a>
+{% else %}
+    <a href="accounts.php">{{ user }}</a>
+    <a href="logout.php"> Выйти</a>
+{% endif %}
 <header>
-	<h1>FAQ</h1>
+    <h1>FAQ</h1>
 </header>
+
 <section class="cd-faq">
 	<ul class="cd-faq-categories">
             {% for key,value in categories %}
@@ -31,7 +38,12 @@
 	<div class="cd-faq-items">
             {% for key,value in tree %}
 		<ul id="{{ categories[key].name }}" class="cd-faq-group">
-			<li class="cd-faq-title"><h2>{{ categories[key].name }}</h2></li>
+
+			<li class="cd-faq-title">
+                            <h2>{{ categories[key].name }}</h2>
+                            
+                        </li>
+
                     {% for keyQuestion,valueQuestion in value %}
 			<li>
 				<a class="cd-faq-trigger" href="#0">{{ valueQuestion.topic }}</a>
@@ -40,6 +52,7 @@
 				</div> <!-- cd-faq-content -->
 			</li>
                     {% endfor %}
+                    <a href='question.php?category={{ categories[key].name }}'>Задать вопрос</a>
 		</ul> <!-- cd-faq-group -->
             {% endfor %}
 

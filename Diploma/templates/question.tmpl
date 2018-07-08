@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>Авторизация</title>
+</head>
+<body>
+<section id="question">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-wrap">
+                    <h1>Задайте вопрос</h1>
+                    
+                    <form method="POST">
+                        <div class="form-group">
+                            <label for="sel1">Выберите тему:</label>
+                            <select class="form-control" name="category" id="sel1">
+                                {% for key,value in categories %}
+                                    <option>{{ value.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="lg" class="sr-only">Ваше имя</label>
+                            <input type="text" placeholder="Имя" name="name" id="lg" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="key" class="sr-only">Email</label>
+                            <input type="text" placeholder="Email" name="email" id="key" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="key" class="sr-only">Тема</label>
+                            <input type="text" placeholder="topic" name="topic" id="key" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="comment">Вопрос:</label>
+                            <textarea class="form-control" rows="5" name="question" id="comment"></textarea>
+                        </div>
+                        
+                        <input type="submit" name="sendQuestion" id="btn-success" class="btn btn-custom btn-lg btn-block" value="Задать">
+                    </form>
+
+                    <hr>
+                </div>
+            </div> <!-- /.col-xs-12 -->
+        </div> <!-- /.row -->
+    </div> <!-- /.container -->
+</section>
+</body>
+</html>

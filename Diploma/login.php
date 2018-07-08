@@ -1,6 +1,6 @@
 <?php
-require_once './functions.php';
-require_once 'C:\xampp\htdocs\Netology\Homework16\vendor\autoload.php';
+require_once '.\functions.php';
+require_once '.\vendor\autoload.php';
 
 session_start();
 
