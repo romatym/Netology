@@ -16,6 +16,9 @@ if (isset($_GET['user'])) {
 elseif (isset($_COOKIE['user'])) {    
     $user = $_COOKIE['user'];
 }
+ else {
+     $user = '';
+}
 
 if (isset($_GET['category'])) {
     $category_id = $_GET['category'];
@@ -29,7 +32,8 @@ initTwig('index.tmpl',
         array(
         'tree'=>getTree($pdo),
         'categories'=>getCategories($pdo),
-        'selectedCategory'=>$category_id
+        'selectedCategory'=>$category_id, 
+        'user'=>$user
       )
 );
 
